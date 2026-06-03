@@ -21,14 +21,19 @@ export class MotorcyclesService {
   }
 
   async findOne(id: string): Promise<Motorcycle> {
-    const motorcycle = await this.motorcycleRepository.findOne({ where: { id } });
+    const motorcycle = await this.motorcycleRepository.findOne({
+      where: { id },
+    });
     if (!motorcycle) {
       throw new NotFoundException(`Motorcycle with id "${id}" not found`);
     }
     return motorcycle;
   }
 
-  async update(id: string, dto: Partial<CreateMotorcycleDto>): Promise<Motorcycle> {
+  async update(
+    id: string,
+    dto: Partial<CreateMotorcycleDto>,
+  ): Promise<Motorcycle> {
     const motorcycle = await this.findOne(id);
     Object.assign(motorcycle, dto);
     return this.motorcycleRepository.save(motorcycle);

@@ -22,6 +22,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (!user) {
       throw new UnauthorizedException();
     }
+    Object.defineProperty(user, 'sub', {
+      value: payload.sub,
+      writable: true,
+      enumerable: true,
+      configurable: true,
+    });
     return user;
   }
 }

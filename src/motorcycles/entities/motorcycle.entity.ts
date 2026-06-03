@@ -4,7 +4,9 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { Rental } from '../../rentals/entities/rental.entity';
 
 @Entity('motorcycles')
 export class Motorcycle {
@@ -29,7 +31,8 @@ export class Motorcycle {
   @Column({ default: true })
   isAvailable!: boolean;
 
-  // rentals — @OneToMany(() => Rental, rental => rental.motorcycle) (add later when Rental module is created)
+  @OneToMany(() => Rental, (rental) => rental.motorcycle)
+  rentals!: Rental[];
 
   // reviews — @OneToMany(() => Review, review => review.motorcycle) (add later when Review module is created)
 

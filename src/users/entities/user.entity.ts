@@ -1,4 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+} from 'typeorm';
+import { Rental } from '../../rentals/entities/rental.entity';
 
 @Entity('users')
 export class User {
@@ -27,7 +35,8 @@ export class User {
   })
   role!: 'admin' | 'customer';
 
-  // rentals — @OneToMany(() => Rental, rental => rental.user) (add later, leave placeholder comment for now)
+  @OneToMany(() => Rental, (rental) => rental.user)
+  rentals!: Rental[];
 
   // reviews — @OneToMany(() => Review, review => review.user) (same)
 

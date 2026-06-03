@@ -8,6 +8,8 @@ import { AuthModule } from './auth/auth.module';
 import { User } from './users/entities/user.entity';
 import { MotorcyclesModule } from './motorcycles/motorcycles.module';
 import { Motorcycle } from './motorcycles/entities/motorcycle.entity';
+import { RentalsModule } from './rentals/rentals.module';
+import { Rental } from './rentals/entities/rental.entity';
 
 @Module({
   imports: [
@@ -23,7 +25,7 @@ import { Motorcycle } from './motorcycles/entities/motorcycle.entity';
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
-        entities: [User, Motorcycle],
+        entities: [User, Motorcycle, Rental],
         synchronize: true,
       }),
       inject: [ConfigService],
@@ -31,9 +33,9 @@ import { Motorcycle } from './motorcycles/entities/motorcycle.entity';
     UsersModule,
     AuthModule,
     MotorcyclesModule,
+    RentalsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
-
