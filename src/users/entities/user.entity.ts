@@ -7,6 +7,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Rental } from '../../rentals/entities/rental.entity';
+import { Review } from '../../reviews/entities/review.entity';
 
 @Entity('users')
 export class User {
@@ -38,7 +39,8 @@ export class User {
   @OneToMany(() => Rental, (rental) => rental.user)
   rentals!: Rental[];
 
-  // reviews — @OneToMany(() => Review, review => review.user) (same)
+  @OneToMany(() => Review, (review) => review.user)
+  reviews!: Review[];
 
   @CreateDateColumn()
   createdAt!: Date;

@@ -7,6 +7,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Rental } from '../../rentals/entities/rental.entity';
+import { Review } from '../../reviews/entities/review.entity';
 
 @Entity('motorcycles')
 export class Motorcycle {
@@ -34,7 +35,8 @@ export class Motorcycle {
   @OneToMany(() => Rental, (rental) => rental.motorcycle)
   rentals!: Rental[];
 
-  // reviews — @OneToMany(() => Review, review => review.motorcycle) (add later when Review module is created)
+  @OneToMany(() => Review, (review) => review.motorcycle)
+  reviews!: Review[];
 
   @CreateDateColumn()
   createdAt!: Date;

@@ -10,6 +10,8 @@ import { MotorcyclesModule } from './motorcycles/motorcycles.module';
 import { Motorcycle } from './motorcycles/entities/motorcycle.entity';
 import { RentalsModule } from './rentals/rentals.module';
 import { Rental } from './rentals/entities/rental.entity';
+import { ReviewsModule } from './reviews/reviews.module';
+import { Review } from './reviews/entities/review.entity';
 
 @Module({
   imports: [
@@ -25,7 +27,7 @@ import { Rental } from './rentals/entities/rental.entity';
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
-        entities: [User, Motorcycle, Rental],
+        entities: [User, Motorcycle, Rental, Review],
         synchronize: true,
       }),
       inject: [ConfigService],
@@ -34,6 +36,7 @@ import { Rental } from './rentals/entities/rental.entity';
     AuthModule,
     MotorcyclesModule,
     RentalsModule,
+    ReviewsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
