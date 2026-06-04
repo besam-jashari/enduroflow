@@ -10,12 +10,14 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { MotorcyclesService } from './motorcycles.service';
 import { CreateMotorcycleDto } from './dto/create-motorcycle.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 
+@ApiTags('motorcycles')
 @Controller('motorcycles')
 export class MotorcyclesController {
   constructor(private readonly motorcyclesService: MotorcyclesService) {}
@@ -23,11 +25,16 @@ export class MotorcyclesController {
   // ─── Public routes ────────────────────────────────────────────────
 
   @Get()
+  @ApiOperation({ summary: 'Get all motorcycles' })
+  @ApiResponse({ status: 200, description: 'List of all motorcycles.' })
   findAll() {
     return this.motorcyclesService.findAll();
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Get a motorcycle by ID' })
+  @ApiResponse({ status: 200, description: 'Motorcycle details.' })
+  @ApiResponse({ status: 404, description: 'Motorcycle not found.' })
   findOne(@Param('id') id: string) {
     return this.motorcyclesService.findOne(id);
   }
@@ -37,6 +44,12 @@ export class MotorcyclesController {
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({ summary: 'Create a new motorcycle (Admin only)' })
+  @ApiResponse({ status: 201, description: 'Motorcycle successfully created.' })
+  @ApiResponse({ status: 400, description: 'Bad request.' })
+  @ApiResponse({ status: 401, description: 'Unauthorized.' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
   create(@Body() dto: CreateMotorcycleDto) {
     return this.motorcyclesService.create(dto);
   }
@@ -44,6 +57,14 @@ export class MotorcyclesController {
   @Put(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({ summary: 'Update a motorcycle by ID (Admin only)' })
+  @ApiBody({ type: CreateMotorcycleDto, description: 'Motorcycle update fields (all fields are optional)' })
+  @ApiResponse({ status: 200, description: 'Motorcycle successfully updated.' })
+  @ApiResponse({ status: 400, description: 'Bad request.' })
+  @ApiResponse({ status: 401, description: 'Unauthorized.' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiResponse({ status: 404, description: 'Motorcycle not found.' })
   update(@Param('id') id: string, @Body() dto: Partial<CreateMotorcycleDto>) {
     return this.motorcyclesService.update(id, dto);
   }
@@ -51,7 +72,13 @@ export class MotorcyclesController {
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
+  @ApiBearerAuth('JWT-auth')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: 'Delete a motorcycle by ID (Admin only)' })
+  @ApiResponse({ status: 204, description: 'Motorcycle successfully deleted.' })
+  @ApiResponse({ status: 401, description: 'Unauthorized.' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiResponse({ status: 404, description: 'Motorcycle not found.' })
   remove(@Param('id') id: string) {
     return this.motorcyclesService.remove(id);
   }
