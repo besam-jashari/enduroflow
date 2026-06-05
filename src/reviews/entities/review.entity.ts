@@ -27,7 +27,7 @@ export class Review {
   @UpdateDateColumn()
   updatedAt!: Date;
 
-  @ManyToOne(() => Motorcycle, (motorcycle) => motorcycle.reviews)
+  @ManyToOne(() => Motorcycle, (motorcycle) => motorcycle.reviews, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'motorcycleId' })
   motorcycle!: Motorcycle;
 

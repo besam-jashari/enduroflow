@@ -6,6 +6,7 @@ import {
   Delete,
   Body,
   Param,
+  Query,
   UseGuards,
   HttpCode,
   HttpStatus,
@@ -13,6 +14,7 @@ import {
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { MotorcyclesService } from './motorcycles.service';
 import { CreateMotorcycleDto } from './dto/create-motorcycle.dto';
+import { FindMotorcyclesQueryDto } from './dto/find-motorcycles-query.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -25,10 +27,15 @@ export class MotorcyclesController {
   // ─── Public routes ────────────────────────────────────────────────
 
   @Get()
-  @ApiOperation({ summary: 'Get all motorcycles' })
-  @ApiResponse({ status: 200, description: 'List of all motorcycles.' })
-  findAll() {
-    return this.motorcyclesService.findAll();
+  @ApiOperation({
+    summary: 'Get all motorcycles',
+    description:
+      'Optional filters: search, minPrice, maxPrice, isAvailable, cc. Sort with sortBy (pricePerDay | brand | cc; default createdAt) and order (ASC | DESC; default DESC).',
+  })
+  @ApiResponse({ status: 200, description: 'List of motorcycles.' })
+  @ApiResponse({ status: 400, description: 'Invalid query parameters.' })
+  findAll(@Query() query: FindMotorcyclesQueryDto) {
+    return this.motorcyclesService.findAll(query);
   }
 
   @Get(':id')

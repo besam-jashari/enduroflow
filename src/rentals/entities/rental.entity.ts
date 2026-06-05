@@ -35,7 +35,7 @@ export class Rental {
   @JoinColumn({ name: 'userId' })
   user!: User;
 
-  @ManyToOne(() => Motorcycle, (motorcycle) => motorcycle.rentals)
+  @ManyToOne(() => Motorcycle, (motorcycle) => motorcycle.rentals, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'motorcycleId' })
   motorcycle!: Motorcycle;
 
