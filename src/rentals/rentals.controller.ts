@@ -7,6 +7,7 @@ import {
   Param,
   UseGuards,
   Request,
+  Query,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { RentalsService } from './rentals.service';
@@ -50,8 +51,8 @@ export class RentalsController {
   @ApiResponse({ status: 200, description: 'List of all rentals.' })
   @ApiResponse({ status: 401, description: 'Unauthorized.' })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
-  findAll() {
-    return this.rentalsService.findAll();
+  findAll(@Query('search') search?: string) {
+    return this.rentalsService.findAll(search);
   }
 
   @Patch(':id/status')

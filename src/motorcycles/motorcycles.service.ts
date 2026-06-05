@@ -30,6 +30,12 @@ export class MotorcyclesService {
       );
     }
 
+    if (query.brand?.trim()) {
+      qb.andWhere('motorcycle.brand ILIKE :brand', {
+        brand: query.brand.trim(),
+      });
+    }
+
     if (query.minPrice !== undefined) {
       qb.andWhere('motorcycle.pricePerDay >= :minPrice', {
         minPrice: query.minPrice,

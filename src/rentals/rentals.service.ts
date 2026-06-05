@@ -87,10 +87,19 @@ export class RentalsService {
     });
   }
 
-  async findAll(): Promise<Rental[]> {
-    return this.rentalRepository.find({
-      relations: { user: true, motorcycle: true },
-    });
+  async findAll(search?: string): Promise<Rental[]> {
+    const qb = this.rentalRepository.createQueryBuilder('rental')
+      .leftJoinAndSelect('rental.user', 'user')
+      .leftJoinAndSelect('rental.motorcycle', 'motorcycle');
+
+    if (search?.trim()) {
+      qb.where(
+        '(motorcycle.brand ILIKE :search OR motorcycle.model ILIKE :search OR user.firstName ILIKE :search OR user.lastName ILIKE :search OR user.email ILIKE :search)',
+        { search: `%${search.trim()}%` }
+      );
+    }
+
+    return qb.getMany();
   }
 
   async updateStatus(

@@ -19,8 +19,15 @@ export class UsersService {
     return this.userRepository.findOne({ where: { email } });
   }
 
-  async findAll(): Promise<User[]> {
-    return this.userRepository.find();
+  async findAll(search?: string): Promise<User[]> {
+    const qb = this.userRepository.createQueryBuilder('user');
+    if (search?.trim()) {
+      qb.where(
+        '(user.firstName ILIKE :search OR user.lastName ILIKE :search OR user.email ILIKE :search)',
+        { search: `%${search.trim()}%` }
+      );
+    }
+    return qb.getMany();
   }
 
   async findOne(id: string): Promise<User | null> {
