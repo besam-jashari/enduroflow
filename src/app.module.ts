@@ -28,7 +28,7 @@ import { Review } from './reviews/entities/review.entity';
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
         entities: [User, Motorcycle, Rental, Review],
-        synchronize: true,
+        synchronize: false,
       }),
       inject: [ConfigService],
     }),
